@@ -26,7 +26,7 @@ SERV_PORT = 5000
 nickname = input('Enter your nickname: ')
 s = socket.socket()
 s.connect((SERV_IP, SERV_PORT))
-s.send(nickname.encode() + ' has connected!')
+s.send((nickname + ' has connected!').encode())
 
 
 it = InputThread()
