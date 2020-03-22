@@ -17,6 +17,7 @@ class OutputThread(Thread):
         
     def run(self):
         while True:
+            print('waiting data')
             print(s.recv(1024).decode())
 
 
