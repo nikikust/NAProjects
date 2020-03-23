@@ -3,7 +3,8 @@ import sys
 from threading import Thread
 import time
 
-data=[]
+data=''
+conector=''
 
 class InputThread(Thread):
     def __init__(self):
@@ -11,7 +12,7 @@ class InputThread(Thread):
         
     def run(self):
         while True:
-            sock.send(input('>').encode())
+            sock.send('txt' + input('>').encode())
         
 
 class OutputThread(Thread):
@@ -23,10 +24,14 @@ class OutputThread(Thread):
         while True:
             data=sock.recv(1024).decode()
             if data[:2] == 'con':
-                users.append(data[3:])
-                print(data[3:],'connected')
+                conector=data[3:]
+                print(conector, 'connected')
+                sock.send('inf' + nickname.encode())
+            elif data[:2] == 'dcn':
+                print(conector,'disconnected')
+                conector=''
             elif data[:2] == 'txt':
-                print(data[3:])
+                print(conector + '>',data[3:])
 
 nickname = input('Enter your nickname: ')
 
