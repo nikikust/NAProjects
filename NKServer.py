@@ -3,17 +3,20 @@ import sys
 from threading import Thread
 import time
 
-global data, connector, conn, addr
+global data, connector, conn, addr, STATE
 
-connector=''
+connector = ''
+STATE = 1
 
 class InputThread(Thread):
     def __init__(self):
         Thread.__init__(self)
         
     def run(self):
-        while True:
+        global STATE
+        while STATE:
             conn.send(('txt' + input('>')).encode())
+        sys.exit()
         
 
 class OutputThread(Thread):
@@ -21,10 +24,10 @@ class OutputThread(Thread):
         Thread.__init__(self)
         
     def run(self):
-        global conn, addr
+        global conn, addr, STATE
         data=''
         print('waiting data')
-        while True:
+        while STATE:
             data=conn.recv(1024).decode()
             if data[:3] == 'con':
                 connector=data[3:]
@@ -33,14 +36,16 @@ class OutputThread(Thread):
             elif data[:3] == 'dcn':
                 print(connector,'disconnected')
                 connector=''
-                conn, addr = sock.accept()
+                STATE = 0
+                #conn, addr = sock.accept()
             elif data[:3] == 'txt':
                 print(connector + '>',data[3:])
+        sys.exit()
 
 nickname = input('Enter your nickname: ')
 
 sock = socket.socket()
-sock.bind(('ff64.ddns.net', 30000))
+sock.bind(('', 30000))
 sock.listen(5)
 
 print('started')

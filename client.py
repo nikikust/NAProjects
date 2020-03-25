@@ -1,4 +1,5 @@
 import socket
+import sys
 from threading import Thread
 
 global owner
@@ -36,6 +37,7 @@ class InputThread(Thread):
                     print('Invalid command')
             else:
                 sock.send(('txt' + mail).encode())
+        sys.exit()
         
 
 class OutputThread(Thread):
@@ -52,9 +54,9 @@ class OutputThread(Thread):
                 print('Owner is', owner)
             elif data[:3] == 'txt':
                 print(owner + ':', data[3:])
+        sys.exit()
 
-
-SERV_IP = 'ff64.ddns.net'
+SERV_IP = 'localhost'
 SERV_PORT = 30000
 
 nickname = input('Enter your nickname: ')
