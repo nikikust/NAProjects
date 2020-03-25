@@ -12,7 +12,7 @@ class InputThread(Thread):
         
     def run(self):
         while True:
-            sock.send('txt' + input('>').encode())
+            conn.send(('txt' + input('>')).encode())
         
 
 class OutputThread(Thread):
@@ -22,22 +22,25 @@ class OutputThread(Thread):
     def run(self):
         print('waiting data')
         while True:
-            data=sock.recv(1024).decode()
-            if data[:2] == 'con':
+            data=conn.recv(1024).decode()
+            if data[:3] == 'con':
                 conector=data[3:]
                 print(conector, 'connected')
-                sock.send('inf' + nickname.encode())
-            elif data[:2] == 'dcn':
+                conn.send(('inf' + nickname).encode())
+            elif data[:3] == 'dcn':
                 print(conector,'disconnected')
                 conector=''
-            elif data[:2] == 'txt':
+            elif data[:3] == 'txt':
                 print(conector + '>',data[3:])
 
 nickname = input('Enter your nickname: ')
 
 sock = socket.socket()
-sock.bind(('ff64.ddns.net', 5000))
+sock.bind(('ff64.ddns.net', 30000))
 sock.listen(5)
+
+print('started')
+
 conn, addr = sock.accept()
 
 it = InputThread()

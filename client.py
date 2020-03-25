@@ -23,6 +23,7 @@ class InputThread(Thread):
         
     def run(self):
         global STATE
+        sock.send(('con' + nickname).encode())
         while STATE:
             mail = input('>')
             cmd = []
@@ -46,21 +47,19 @@ class OutputThread(Thread):
         print('waiting for data')
         while STATE:
             data = sock.recv(1024).decode()
-            if data[:2] == 'inf':
+            if data[:3] == 'inf':
                 owner = data[3:]
                 print('Owner is', owner)
-            elif data[:2] == 'txt':
+            elif data[:3] == 'txt':
                 print(owner + ':', data[3:])
 
 
 SERV_IP = 'ff64.ddns.net'
-SERV_PORT = 5000
+SERV_PORT = 30000
 
 nickname = input('Enter your nickname: ')
 sock = socket.socket()
 sock.connect((SERV_IP, SERV_PORT))
-sock.send(('con' + nickname).encode())
-
 
 it = InputThread()
 ot = OutputThread()
