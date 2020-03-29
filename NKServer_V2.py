@@ -43,7 +43,7 @@ class OutputThread(Thread):
 nickname = input('Enter your nickname: ')
 
 sock = socket.socket()
-sock.bind(('', 30000))
+sock.bind(('ff64.ddns.net', 5000))
 sock.listen(5)
 
 print('started')

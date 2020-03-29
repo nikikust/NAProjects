@@ -56,8 +56,8 @@ class OutputThread(Thread):
                 print(owner + ':', data[3:])
         sys.exit()
 
-SERV_IP = 'localhost'
-SERV_PORT = 30000
+SERV_IP = 'ff64.ddns.net'
+SERV_PORT = 5000
 
 nickname = input('Enter your nickname: ')
 sock = socket.socket()
