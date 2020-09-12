@@ -23,7 +23,7 @@ class InputThread(Thread):
         Thread.__init__(self)
         
     def run(self):
-        global STATE
+        global STATE, owner
         sock.send(('con' + nickname).encode())
         while STATE:
             mail = input('>')
@@ -45,7 +45,7 @@ class OutputThread(Thread):
         Thread.__init__(self)
         
     def run(self):
-        global STATE
+        global STATE, owner
         print('waiting for data')
         while STATE:
             data = sock.recv(1024).decode()

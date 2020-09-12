@@ -24,21 +24,21 @@ class OutputThread(Thread):
         
     def run(self):
         global conn, addr, STATE
-        data=''
+        data = ''
         print('waiting data')
         while STATE:
             data=conn.recv(1024).decode()
             if data[:3] == 'con':
-                connector=data[3:]
+                connector = data[3:]
                 print(connector, 'connected')
                 conn.send(('inf' + nickname).encode())
             elif data[:3] == 'dcn':
-                print(connector,'disconnected')
-                connector=''
+                print(connector, 'disconnected')
+                connector = ''
                 STATE = 0
                 #conn, addr = sock.accept()
             elif data[:3] == 'txt':
-                print(connector + '>',data[3:])
+                print(connector + '>', data[3:])
 
 nickname = input('Enter your nickname: ')
 
